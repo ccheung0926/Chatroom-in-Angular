@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html ng-app="chat">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script> 
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <script src="chat.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="chat.css">
+  </head>
+  <body>
+  <div ng-controller="chatApp as ctrl">
+  <h2 ng-show="ctrl.chatStart">Participants in the chat room: </h2>
+  <ul ng-show="ctrl.chatStart">
+    <li class="participants" ng-repeat="user in ctrl.users track by $index"><a ng-href="#" ng-click="createRoom($event,ctrl.username)">{{user}}</a></li>
+  </ul>
+  <ul ng-show="ctrl.chatStart" class="chat-thread">
+    <li ng-repeat="msg in ctrl.messages">
+    <span ng-if="msg.user == ctrl.username" class="conversation">Me: {{msg.text}}</span>
+    <span ng-if="msg.user !== ctrl.username" class="conversation">{{msg.user}}: {{msg.text}}</span>
+    </li>
+  </ul>
+  <form ng-show="!ctrl.gotName" class="chat-window">
+    <input type='text' name="username" id="username" class="form-control" placeholder="Enter Your Name" ng-model="ctrl.username" required> 
+    <button ng-click="ctrl.getUser()">Submit</button>
+  </form>
+  <form ng-show="ctrl.chatStart"> 
+<!--     <input type='text' name="username" class="form-control" placeholder="Message" ng-model="ctrl.message"required> -->
+    <input type='text' name="username" class="chat-window-message" placeholder="Message" ng-model="ctrl.message"required>
+    <button ng-click="ctrl.sendMessage()">Send</button>
+  </form>
+  </div>
+</body>
+</html>
